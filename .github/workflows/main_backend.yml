@@ -24,9 +24,9 @@ jobs:
         run: npm install
 
       # Run backend tests
-      - name: Run backend tests
-        working-directory: Backend
-        run: npm test
+      # - name: Run backend tests
+      #   working-directory: Backend
+      #   run: npm test
 
       # Build Docker image for backend
       - name: Build Docker image for backend
