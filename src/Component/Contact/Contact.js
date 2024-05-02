@@ -89,8 +89,8 @@ const handleUser=(e)=>{
 
             </div>
       {currentChatUser !== '' ?  <Chatcontainer currentChatUser={currentChatUser}/> :
-       <div style={{marginLeft:"40px",marginTop:'10px'}}>
-         <p> OPEN YOUR FRIENDS</p>
+       <div style={{display:'flex',justifyContent:'center',alignItems:'center',width:'80%',height:'85vh'}}>
+         <p style={{fontSize:'4rem',fontWeight:'1000'}}> Welcome to FotoFlask Chat</p>
          </div>}
             
         </div>

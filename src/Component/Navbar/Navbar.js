@@ -70,16 +70,50 @@ export default function Navbar() {
         </div>
       </div>
       <div className='IconsContainer'>
-      <Link to="/reels" ><img src={`${VideoIcon}`} className="Icons" alt="" /></Link>
-        <Link to="/chat" style={{ textDecoration: 'none', color: 'black' }}>
-          <img src={`${Message}`} className="Icons" alt="" />
-        </Link>
-        <Link to="/addnewpost" className='Icons' style={{marginBottom: '8px', alignItems: 'center', textDecoration: 'none', color: 'black', fontSize: '25px', display: 'flex'}}>
-          +
-        </Link>
-        <Link to="/addnewreel" className='Icons' style={{marginBottom: '8px', alignItems: 'center', textDecoration: 'none', color: 'black', fontSize: '25px', display: 'flex'}}>
-          R
-        </Link>
+         <Link to="/reels">
+            <div className="iiconn2">
+              <script src="https://cdn.lordicon.com/lordicon.js"></script>
+              <lord-icon
+                src="https://cdn.lordicon.com/aklfruoc.json"
+                trigger="hover"
+                style={{ width: "30px", height: "30px" }}
+              ></lord-icon>
+            </div>
+          </Link>
+          <Link to="/chat">
+            <div className="iiconn2">
+              <script src="https://cdn.lordicon.com/lordicon.js"></script>
+              <lord-icon
+              src="https://cdn.lordicon.com/fdxqrdfe.json"
+                trigger="hover"
+                style={{ width: "30px", height: "30px" }}
+              ></lord-icon>
+            </div>
+          </Link>
+          <Link to="/addnewpost">
+            <div className="iiconn2">
+              <script src="https://cdn.lordicon.com/lordicon.js"></script>
+              <lord-icon
+                 src="https://cdn.lordicon.com/zrkkrrpl.json"
+                trigger="hover"
+                stroke="bold"
+                colors="primary:#121331,secondary:#000000"
+                style={{ width: "30px", height: "30px" }}
+              ></lord-icon>
+            </div>
+          </Link>
+        <Link to="/addnewreel">
+            <div className="iiconn2">
+              <script src="https://cdn.lordicon.com/lordicon.js"></script>
+              <lord-icon
+                src="https://cdn.lordicon.com/msrokfyb.json"
+                trigger="hover"
+                stroke="bold"
+                colors="primary:#121331,secondary:#000000"
+                style={{ width: "30px", height: "30px" }}
+              ></lord-icon>
+            </div>
+          </Link>
         <Link to={user.user.type===2? `/organization/${id}` : `/profilepage/${id}`} style={{ textDecoration: 'none', color: 'black' }}>
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <img src={(user.user.profilepicture) ? user.user.profilepicture : defaultUser} className="ProfileImage" alt="" />

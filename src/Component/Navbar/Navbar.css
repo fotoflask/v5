@@ -33,6 +33,17 @@
     flex: 0.2 1;
 }
 
+.iiconn2{
+    background-color: var(--secondary-color);
+    width:2.5pc;
+    height: 2.5pc;
+    margin: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
 .LogoContainer:hover{
     cursor: pointer;
 }
