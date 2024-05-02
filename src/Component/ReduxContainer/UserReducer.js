@@ -23,8 +23,7 @@ export const UserReducer = createSlice({
                               state.user = null
                     },
                     updateUserProfilePicture: (state, action) => {
-                        alert("action.payload",action.payload);
-                        state.user.profilepicture = action.payload;
+                        state.user.user.profilepicture = action.payload;
                     },
           },
 })

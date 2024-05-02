@@ -12,6 +12,14 @@ export const login = async(dispatch , user)=>{
           }
 }
 
+export const profilePicUpdate = async (dispatch, newProfilePicture) => {
+  try {
+    dispatch(updateUserProfilePicture(newProfilePicture));
+  } catch (error) {
+    console.log("Error updating profile picture:", error);
+  }
+};
+
 export const loginOrganisation = async(dispatch , user)=>{
             dispatch(loginStart());
             try {

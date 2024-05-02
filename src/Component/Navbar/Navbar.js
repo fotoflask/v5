@@ -114,7 +114,7 @@ export default function Navbar() {
               ></lord-icon>
             </div>
           </Link>
-        <Link to={user.user.type===2? `/organization/${id}` : `/profilepage/${id}`} style={{ textDecoration: 'none', color: 'black' }}>
+        <Link to={`/profilepage/${id}`} style={{ textDecoration: 'none', color: 'black' }}>
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <img src={(user.user.profilepicture) ? user.user.profilepicture : defaultUser} className="ProfileImage" alt="" />
             <p className="NavbarUsername" style={{ marginLeft: '5px' }}>{user.user.username}</p>

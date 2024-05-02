@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faCircleCheck as okTick, faCircleXmark as noCross} from '@fortawesome/free-regular-svg-icons'
 import { useDispatch, useSelector } from "react-redux";
@@ -9,6 +10,9 @@ import Image from "../Images/blank-profile-picture-973460_960_720.webp";
 import {updateUserProfilePicture} from "../ReduxContainer/UserReducer";
 import axios from "axios";
 import { updateProfilePicture } from "../ReduxContainer/apiCall";
+import app from "../../firebase"
+import { toast } from 'react-toastify';
+import { profilePicUpdate } from "../ReduxContainer/apiCall";
 
 const settingsPane = {
   display: "flex",
@@ -311,6 +315,7 @@ export const Setting3 = ({ user, setUser }) => {
 
   const BACKEND_URI = process.env.REACT_APP_BACKEND_URI;
   const dispatch = useDispatch();
+  const [file,setFile] = useState(null);
 
   const jwt_here=user.jwttoken
 
@@ -322,35 +327,60 @@ export const Setting3 = ({ user, setUser }) => {
     document.getElementById("ImagePreviewImage").src = ImagePreview;
   };
 
-  const handleSave = async (e) => {
+  const handlepost =(e) =>{
+    // alert('Uploading Profile Photo');
     e.preventDefault();
-    try {
-      const formData = new FormData();
-      formData.append('profilepicture', document.getElementById("profilepicture").files[0]);
-  
-      const response = await axios.post(
-        `${BACKEND_URI}/api/user/upload/profilepic`,
-        formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            jwttoken: jwt_here
-          }
-        }
-      );
-  
-      // Assuming the response.data contains the file path
-      const filePath = response.data;
-      alert(filePath);
-      // Update Redux or local state with the file path
-      updateProfilePicture(dispatch, filePath);
-      dispatch(updateUserProfilePicture(filePath));
-      console.log(user.user.profilepicture);
-    } catch (error) {
-      console.log("ERROR OCCURRED IN CATCH BLOCK:", error);
-      // Handle error if needed
+    if(file !== null){
+    const currentDate = new Date();
+    const filename = currentDate.getTime()+file.name;
+    const storage = getStorage(app);
+    const storageRef = ref(storage,filename);
+
+    const uploadTask = uploadBytesResumable(storageRef, file);
+
+    toast.info('Uploading Profile Photo ');
+    uploadTask.on('state_changed', 
+   (snapshot) => {
+    // Observe state change events such as progress, pause, and resume
+    // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+    console.log('Upload is ' + progress + '% done');
+    switch (snapshot.state) {
+      case 'paused':
+        console.log('Upload is paused');
+        break;
+      case 'running':
+        console.log('Upload is running');
+        break;
+      default:
+        break;
     }
-  };
+  }, 
+  (error) => {
+    // Handle unsuccessful uploads
+  }, 
+  () => {
+    // Handle successful uploads on complete
+    // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+    getDownloadURL(uploadTask.snapshot.ref).then(async(downloadURL) => {
+      await fetch(`${BACKEND_URI}/api/user/upload/profilepic`,{method:"POST",
+      headers:{
+        'Content-Type':'application/JSON',
+        jwttoken:jwt_here 
+      },
+      body:JSON.stringify({image:downloadURL})
+    }).then((data)=>{
+
+      window.location.reload(true);
+      toast.success('Post Added Successfully');
+      profilePicUpdate(dispatch, downloadURL);
+      window.location.reload(true);
+    })
+    });
+  }
+);
+    }
+  }
   
 
   return (
@@ -402,7 +432,7 @@ export const Setting3 = ({ user, setUser }) => {
         <input
           type="file"
           name="profilepicture"
-          onChange={handleImageInput}
+          onChange={(e)=> {setFile(e.target.files[0]); handleImageInput(e)}}
           id="profilepicture"
           style={{ display: "none" }}
         />
@@ -417,7 +447,7 @@ export const Setting3 = ({ user, setUser }) => {
           alignItems: "center",
         }}
       >
-        <button style={saveButton} onClick={handleSave}>Save</button>
+        <button style={saveButton} onClick={handlepost}>Save</button>
       </div>
     </div>
   );
