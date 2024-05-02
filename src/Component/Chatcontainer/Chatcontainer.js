@@ -101,7 +101,7 @@ export default function Chatcontainer({ currentChatUser }) {
         <div className="mainChatContainer">
 
             <div>
-                <div style={{ display: "flex", marginLeft: '30x', marginTop: '10px', backgroundColor: 'rgb(241,243,241)', width: '70pc', padding: '5px', borderRadius: '10px' }}>
+                <div style={{ display: "flex", marginLeft: '30x', marginTop: '10px', backgroundColor: 'rgb(0,0,0)',color:'white', width: '74pc', padding: '5px', borderRadius: '10px' }}>
                     <img src={`${currentChatUser.others.profilepicture}`} className='userProfile' />
                     <p style={{ marginTop: '10px', marginLeft: "10px" }}>{currentChatUser.others.username}</p>
                 </div>
