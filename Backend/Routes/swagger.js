@@ -1,6 +1,6 @@
 /**
  * @swagger
- * /create/user:
+ * /api/user/create/user:
  *   post:
  *     summary: Create a new user
  *     tags: [User]
@@ -91,7 +91,7 @@ const { countDocuments } = require("../Modals/User")
 
 /**
  * @swagger
- * /login:
+ * /api/user/login:
  *   post:
  *     summary: Login user
  *     tags: [User]

@@ -11,6 +11,10 @@ import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 
 const Carousel = (props) => {
 
+  const BACKEND_URI = process.env.REACT_APP_BACKEND_URI;
+  
+
+  const [user_details,setUser_Details] = useState([]);
   const [items, setItems] = useState(props.items || []);
   const [active, setActive] = useState(props.active || 0);
   const [direction, setDirection] = useState("");
@@ -23,7 +27,7 @@ const Carousel = (props) => {
     const getReels = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:4000/api/reels/getAllReels"
+          `${BACKEND_URI}/api/reels/getAllReels`
         );
        console.log(response);
         const shuffledPosts = response.data;
@@ -254,24 +258,6 @@ const [hearts, setHearts] = useState([]);
       clearInterval(intervalId);
     }, 3000);
   };
-
-//   const StyledSvg = styled.svg`
-//   .cls-4 {
-//     fill: #f6fafd;
-//   }
-
-//   .cls-6 {
-//     fill: #ae2d4c;
-//   }
-
-//   .cls-7 {
-//     fill: #cf4054;
-//   }
-
-//   .cls-10 {
-//     fill: #fbb40a;
-//   }
-// `;
 
   const startAnimation_1 = () => {
     const intervalId = setInterval(() => {
@@ -634,7 +620,7 @@ const [hearts, setHearts] = useState([]);
             REELComments && REELComments.map((comm)=>{
               return <div class = 'comment_container' style={{margin:'10px',display:'flex',flexDirection:'row',width:'333px',borderRadius:'20px 30px 30px 0px',border:'1px solid white', backgroundColor: 'rgba(255, 255, 255, 0.2)',backdropFilter: 'blur(10px)',boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'}}>
               <img
-                  src={comm.profilepic}
+                  src={comm.profilepicture}
                 alt=""
                 className="PostImage"
                   style={{ width: "50px", height: "50px", marginRight: "5px" , marginTop:'9px' , marginBottom:'10px' }}

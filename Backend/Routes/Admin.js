@@ -103,19 +103,19 @@ const Post = require('../Modals/Post');
 const redis = require("redis");
 
 // Create a Redis client
-// const redisClient = redis.createClient({
-//     host: '127.0.0.1',
-//     port: 6379,
-// });
+const redisClient = redis.createClient({
+    host: '127.0.0.1',
+    port: 6379,
+});
 
-// redisClient.on("error", function(error) {
-//     console.error("Error connecting to Redis:", error);
-// });
+redisClient.on("error", function(error) {
+    console.error("Error connecting to Redis:", error);
+});
 
 
-// redisClient.on("connect", function() {
-//     console.log("Connected to Redis server");
-// });
+redisClient.on("connect", function() {
+    console.log("Connected to Redis server");
+});
 
 
 
@@ -125,21 +125,21 @@ router.use(csrfProtection);
 
 
 // Middleware to handle caching logic
-// const cacheMiddleware = (req, res, next) => {
-//     const cacheKey = 'allUsers';
+const cacheMiddleware = (req, res, next) => {
+    const cacheKey = 'allUsers';
 
-//     // Check if data exists in cache
-//     redisClient.get(cacheKey, (err, data) => {
-//         if (err) throw err;
+    // Check if data exists in cache
+    redisClient.get(cacheKey, (err, data) => {
+        if (err) throw err;
 
-//         if (data !== null) {
-//             console.log('Data retrieved from cache');
-//             res.json(JSON.parse(data));
-//         } else {
-//             next();
-//         }
-//     });
-// };
+        if (data !== null) {
+            console.log('Data retrieved from cache');
+            res.json(JSON.parse(data));
+        } else {
+            next();
+        }
+    });
+};
 
 //ROUTE -1 :- GET ALL USERS
 
@@ -155,20 +155,20 @@ router.get('/Allusers', verifytoken, async (req, res) => {
 );
 
 
-// router.get('/Allusers', verifytoken, cacheMiddleware, async (req, res) => {
-//     try {
-//         // Fetch data from your database
-//         const users = await User.find();
+router.get('/Redis/Allusers', verifytoken, cacheMiddleware, async (req, res) => {
+    try {
+        // Fetch data from your database
+        const users = await User.find();
 
-//         // Cache data using Redis
-//         redisClient.setex('allUsers', 3600, JSON.stringify(users)); // Cache for 1 hour
+        // Cache data using Redis
+        redisClient.setex('allUsers', 3600, JSON.stringify(users)); // Cache for 1 hour
 
-//         // Return the data as a response
-//         res.json(users);
-//     } catch (err) {
-//         res.status(500).json({ message: err.message });
-//     }
-// });
+        // Return the data as a response
+        res.json(users);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+});
 
 // ROUTE - 2 :- GET ALL Users
 

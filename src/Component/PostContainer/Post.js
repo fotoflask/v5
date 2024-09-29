@@ -256,7 +256,7 @@ export default function Post(props) {
             >
               <img
                 src={
-                  userDetails.profilepicture
+                  userDetails?.profilepicture
                     ? userDetails.profilepicture
                     : defaultUser
                 }
@@ -266,6 +266,7 @@ export default function Post(props) {
               <div>
                 <p style={{ marginLeft: "5px", textAlign: "start" }}>
                   {userDetails.username}
+                  <span style={{margin: '0 5px', color: 'gray', fontSize: 'small'}}>{userDetails?.type === 2 ? 'ad' : ''}</span>
                 </p>
               </div>
             </div>

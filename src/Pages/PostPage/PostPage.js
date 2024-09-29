@@ -196,6 +196,7 @@ export default function PostPage() {
                       style={{ color: "black", textDecoration: "none" }}
                     >
                       <h3>{postUserDetails.username}</h3>
+                      
                     </Link>
                   </div>
                   <div className="postpage_user_follow">

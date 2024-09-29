@@ -12,34 +12,6 @@ const User = require('../Modals/User');
 const { verifytoken } = require('../middleware/verifytoken');
 const Post = require('../Modals/Post');
 
-let storage_profilepics = multer.diskStorage({
-    destination:'../public/Images/ProfilePictures',
-     filename:(req,file,cb)=>{
-        cb(null, Date.now() + '_' + file.originalname);
-        req.body.profilepicture = '/Images/ProfilePictures/'+ Date.now() + '_' + file.originalname;
-     }
-}) 
-
-let uploadprofilepic =multer({
-    storage:storage_profilepics,
-    fileFilter:(req,file,cb)=>{
-        if(
-            file.mimetype === 'image/jpeg' ||
-            file.mimetype === 'image/jpg' ||
-            file.mimetype === 'image/png' ||
-            file.mimetype === 'image/gif'
-        ){
-               cb(null,true);
-        }else{
-            cb(null,false);
-            cb(new Error('ONLY IMAGES ARE ALLOWED TO BE UPLOADED'));
-        }
-
-    }
-})
-
-const upload = multer({ dest: 'images/' })
-
 
 // ROUTE-1 :- CREATE NEW USER 
 // METHOD USED :- POST
@@ -548,21 +520,39 @@ router.put("/:id/addviewer",verifytoken,async(req,res)=>{
  // ROUTER-19:- upload profile photo
 // Profile Photo Upload
 
-router.post("/upload/profilepic",verifytoken,uploadprofilepic.single('profilepicture'),async(req,res)=>{
-    console.log(req.file);
+router.post("/upload/profilepic",verifytoken,async(req,res)=>{
+    const user = await User.findById(req.user.id);
+    if(!user){
+        return res.status(400).send("USER NOT FOUND ");
+    }
+    
     try{
-        const user = await User.findById(req.user.id);
-        if(!user){
-            console.log("user not found");
-            return res.status(400).json("USER NOT FOUND");
-        }
-        await user.updateOne({$set:{profilepicture:req.body.profilepicture}});
-        return res.status(200).send(req.body.profilepicture);
+        console.log(req.body);
+        const update = await User.findByIdAndUpdate(req.user.id,{
+            $set:{profilepicture:req.body.image}
+        });
+        await update.save();
+        res.status(200).send("PROFILE PICTURE UPDATED SUCCESSFULLY");
     }catch(error){
-        return res.status(400).json("SOME ERROR OCCURED IN try-catch in adding story viewer"+error );
+        return res.status(400).send("SOME ERROR OCCURED IN try-catch in updating profile picture"+error);
     }
 }
 );
+
+// ROUTER-20:- get exploreposts of logged in user, posts that are not followed by logged in user
+
+router.get("/exploreposts/:id", verifytoken, async(req, res) => {
+    try {
+      const user = await User.findById(req.params.id);
+      const allPosts = await Post.find();
+      const notFollowingPosts = allPosts.filter((val) => {
+        return !user.following.includes(val.user) && val.user.toString() !== req.params.id;
+      });
+      res.status(200).send(notFollowingPosts);
+    } catch(error) {
+      return res.status(400).json("SOME ERROR OCCURED IN try-catch in adding story viewer" + error);
+    }
+  });
 
  
 
