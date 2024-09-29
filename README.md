@@ -49,7 +49,7 @@ Now, all you need to do is to access it.
 - Open a browser and type localhost:3010
 
 Team: 
-- 🟠 Poojyanth Reddy 
+- 🟠 Poojyanth Reddy  
 - 🟢 Abhiram Reddy 
 - 🟡 Sai Pavan 
 - 🔴 Sravan 
