@@ -149,7 +149,7 @@ const Item = ({ level, id }) => {
   useEffect(() => {
     const getuserdetails = async () => {
       try {
-        const details = await axios.get(`http://localhost:4000/api/user/post/user/details/${id.user}`);
+        const details = await axios.get(`${BACKEND_URI}/api/user/post/user/details/${id.user}`);
         console.log(details.data);
         setUserDetails(details.data);
       } catch (error) {
@@ -163,7 +163,7 @@ const Item = ({ level, id }) => {
 
   const handleReaction5 = async () => {
 
-       await fetch(`http://localhost:4000/api/reels/${id._id}/react_5_reel`,
+       await fetch(`${BACKEND_URI}/api/reels/${id._id}/react_5_reel`,
          {
            method: "PUT",
            headers: {
@@ -532,7 +532,7 @@ const [hearts, setHearts] = useState([]);
   const [comment, setComment] = useState('');
 
   const addCommentToReel=async()=>{
-    await fetch(`http://localhost:4000/api/reels/${id._id}/commentreel`,
+    await fetch(`${BACKEND_URI}/api/reels/${id._id}/commentreel`,
     {
       method: "PUT",
       headers: {
