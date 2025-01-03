@@ -41,7 +41,7 @@ export default function Leftbar() {
     const getstoryviewers = async () => {
       try {
         const response2 = await axios.get(
-          `http://localhost:4000/api/user/getstoryviewers`,
+          `${BACKEND_URI}/api/user/getstoryviewers`,
           {
             headers: {
               jwttoken: jwt_here, // must be the attribute name (same name as in headers )-> i.e jwttoken
